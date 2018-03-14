@@ -1,0 +1,20 @@
+{
+  "rules": {
+    "events": {
+      "$event": {
+        "info": {
+          ".read": true,
+          ".write": "auth != null"
+        },
+        "attendance": {
+          ".read": "auth != null",
+          ".write": "auth != null"
+        }
+      }
+    },
+    "users": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+<div class="container">
+  <!-- EVENT INFO -->
+  <div class="event-info" *ngIf="eventInfo | async as event; else eventNotFound">
+    <div class="row">
+      <div class="col-12">
+        <img src="{{ event.fbImage }}" alt="{{ event.title }}" class="img-fluid">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p>{{ event.type }}</p>
+        <h1>{{ event.title }}</h1>
+        <p><strong>Lugar: </strong>{{  event.place }}</p>
+        <hr>
+        <p>{{ event.description }}</p>
+      </div>
+    </div>
+    <a class="nav-link btn btn-dark btn-lg btn-block" [routerLink]="['user-info']">Asistiré</a>
+  </div>
+  
+  <!-- NO EVENT  -->
+  <ng-template #eventNotFound>
+    <p>
+      <br>
+      <ngb-alert [dismissible]="false">
+        <strong>{{ eventId }}</strong> Parece no ser un evento válido
+      </ngb-alert>
+    </p>
+  </ng-template>
+  
+</div>
