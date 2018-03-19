@@ -1,0 +1,73 @@
+<!-- MODAL -->
+<ng-template #modalContent let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Importante</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('cross')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p><strong>{{ email }}</strong> no esta registrado. Si deseas registrar tu cuenta usando dicho correo selecciona "ACEPTAR"</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="c('cancel')">CANCELAR</button>
+      <button type="button" class="btn btn-primary" (click)="c('accept')">ACEPTAR</button>
+    </div>
+</ng-template>
+<!-- LOADING -->
+<div *ngIf="showLoading" class="modal modal-backdrop modal-dialog-centered loading-modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">        
+        <div class="modal-body">
+          <p>Cargando...</p>
+        </div>        
+      </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center mb-4">Identificarse usando:</h2>
+            <button class="btn" (click)="signInWithGoogle()">Google</button>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+
+                    <!-- form card login -->
+                    <div class="card rounded-0">
+                        <div class="card-header">
+                            <p><strong>Cuenta de Email</strong></p>
+                        </div>
+                        <div class="card-body">
+                            <form class="form" role="form" autocomplete="off" id="formLogin" novalidate="" method="POST">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" class="form-control form-control-lg rounded-0" [(ngModel)]="email" name="email" required>
+                                    <div class="invalid-feedback">Oops, you missed this one.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contraseña</label>
+                                    <input type="password" class="form-control form-control-lg rounded-0" [(ngModel)]="password" name="password" required>
+                                    <div class="invalid-feedback">Enter your password too!</div>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-lg float-right" (click)="signInWithEmail(modalContent)">Entrar</button>
+                            </form>
+                        </div>
+                        <!--/card-block-->
+                    </div>
+                    <!-- /form card login -->
+
+                </div>
+
+
+            </div>
+            <!--/row-->
+
+        </div>
+        <!--/col-->
+    </div>
+    <!--/row-->
+</div>
