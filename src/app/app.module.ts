@@ -11,16 +11,12 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthService } from './shared/services/auth.service';
-import { WorkshopListComponent } from './workshop-list/workshop-list.component';
-import { WorkshopComponent } from './workshop/workshop.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    routerComponents,
-    WorkshopListComponent,
-    WorkshopComponent
+    routerComponents
   ],
   imports: [
     NgbModule.forRoot(),
