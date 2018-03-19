@@ -1,5 +1,6 @@
 export const ProfessionalStatus = [
-    {label: 'Estudiante', value: 'Student'},
+    {label: 'Preparatoria', value: 'High School'},
+    {label: 'Universitario', value: 'University'},
     {label: 'Profesionista', value: 'Professional'}
 ];
 

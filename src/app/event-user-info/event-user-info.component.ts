@@ -5,7 +5,6 @@ import { AuthService } from '../shared/services/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { ProfessionalStatus, States } from './../shared/labels';
 import { UserInfo } from './../shared/interfaces/user-info';
-import { userInfo } from 'os';
 
 @Component({
   selector: 'app-event-user-info',
@@ -28,17 +27,19 @@ export class EventUserInfoComponent implements OnInit {
               }
 
   ngOnInit() {
-    // Subscribe User Info
-    const subRef = this._db.object(`/users/${ this._auth.user.uid }`)
-                    .valueChanges()
-                    .subscribe((uInfo: UserInfo) => {
-                      if (!uInfo) {
-                        subRef.unsubscribe();
-                        return;
-                      }
-
-                      this.currentUser = uInfo;
-                    });
+    this._auth.userState.subscribe(aUser => {
+      // Subscribe User Info
+      const subRef = this._db.object(`/users/${ aUser.uid }`)
+      .valueChanges()
+      .subscribe((uInfo: UserInfo) => {
+        if (!uInfo) {
+          subRef.unsubscribe();
+          return;
+        }
+        this.currentUser = uInfo;
+      });
+    });
+    
     // Subscribe eventId
     this._activatedRoute.params.subscribe( params => {
       this.eventId = params.eventId;
@@ -62,16 +63,18 @@ export class EventUserInfoComponent implements OnInit {
             state: this.currentUser.state,
             city: this.currentUser.city,
             specialNeeds: this.currentUser.specialNeeds ? this.currentUser.specialNeeds : ''
-
           })
           .then(() => {
             console.log('Información personal actualizada exitosamente ');
 
             // Update attendance list
-            const uid =  {};
-            uid[this._auth.user.uid] = true;
             this._db.object(`/events/${ this.eventId }/attendance`)
-                    .set(uid)
+                    .update({
+                      [this._auth.user.uid]: {
+                       uid:  this._auth.user.uid,
+                       workshop: 'none'
+                      }                      
+                    })
                     .then(() => {
                       console.log('Usuario agregado a evento');
                       this.showLoading = false;
@@ -110,7 +113,7 @@ export class EventUserInfoComponent implements OnInit {
 
   createEmptyUserInfo(): UserInfo {
     return {
-      displayName: this._auth.user.displayName ? this._auth.user.displayName : '',
+      displayName: this._auth.user ? this._auth.user.displayName : '',
       professionalStatus: '',
       degree: '',
       school: '',

@@ -13,12 +13,16 @@ export class AuthService {
     this.userState = this.afAuth.authState;
     this.userState.subscribe(user => {
       this.user = user;
-      console.log('User Info: ', this.user);
+      //console.log('User Info: ', this.user);
+      if(this.user) {
+        localStorage.setItem('compa-uid', this.user.uid);
+      }      
     });
   }
 
   isAuthenticated(): boolean {
-    return this.user != null;
+    const lsUser = localStorage.getItem('compa-uid');
+    return lsUser != null;
   }
 
   // Sign up method

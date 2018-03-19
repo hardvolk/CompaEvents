@@ -8,9 +8,10 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <p>{{ event.type }}</p>
         <h1>{{ event.title }}</h1>
+        <p>{{ event.type }}</p>
         <p><strong>Lugar: </strong>{{  event.place }}</p>
+        <a class="nav-link btn-link btn-dark btn-lg btn-block" [routerLink]="['talleres']">TALLERES</a>
         <hr>
         <p>{{ event.description }}</p>
       </div>
