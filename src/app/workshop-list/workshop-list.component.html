@@ -1,0 +1,34 @@
+<!-- MODAL -->
+<ng-template #modalContent let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Importante</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('cross')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Debes registrar o actualizar tu información para el evento antes de registrarte al taller</p>
+  </div>
+  <div class="modal-footer">
+    <a class="btn btn-primary" [routerLink]="['/event/' + eventId + '/user-info']" (click)="d('cross')">ACTUALIZAR</a>
+  </div>
+</ng-template>
+
+<div class="fixed-bottom p-1 bg-success text-light" *ngIf="enrolledWorkshop"><b>Taller Seleccionado:</b> {{ enrolledWorkshop }}</div>
+<div class="container pb-5 mb-2">
+  <div class="row">
+    <div class="col-12 workshop-info" *ngFor="let w of workshopList">
+      <p class="h2 workshop-title">{{ w.title }}</p>
+      <p class="text-muted h5">{{ w.facilitator }}</p>
+      {{ w.description }}
+
+      <button class="btn btn-primary float-right" 
+              *ngIf="ObjectKeys(w).length < w.limit"
+              (click)="enrollUser(w)"
+              >
+               Inscribirme</button>
+
+      <hr class="mb-4 mt-4">
+    </div>
+  </div>
+</div>
