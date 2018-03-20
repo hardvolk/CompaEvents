@@ -1,10 +1,9 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
-import { UserInfo } from './../shared/interfaces/user-info';
 
 @Component({
   selector: 'app-workshop-list',
@@ -14,6 +13,7 @@ import { UserInfo } from './../shared/interfaces/user-info';
 export class WorkshopListComponent implements OnInit {
   workshopList = [];
   eventId = '';
+  userCanSelectWorkshop = false;
   isUserAttendee = false;
   isUserEnrolled = false;
   enrolledWorkshop = '';
@@ -51,6 +51,11 @@ export class WorkshopListComponent implements OnInit {
       this._ngbModal.open(this.modalContent);
       return;
     }
+    // Exit if user has not permission to select workshop
+    if(!this.userCanSelectWorkshop) {
+      alert('Aun no puedes seleccionar taller');
+      return;
+    }
     // Exit If user is enrolled in any workshop
     if(this.isUserEnrolled) {
       alert('Ya estas inscrito en un taller');
@@ -83,6 +88,7 @@ export class WorkshopListComponent implements OnInit {
               .stateChanges()
               .subscribe(a => {
                 this.isUserAttendee = true;
+                this.userCanSelectWorkshop = a.payload.val().workshopSelection;
                 console.log('Key found in attendance ', a);
                 
                 // Determ if user is enrolled in workshop

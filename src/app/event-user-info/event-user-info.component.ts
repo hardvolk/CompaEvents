@@ -72,6 +72,9 @@ export class EventUserInfoComponent implements OnInit {
                     .update({
                       [this._auth.user.uid]: {
                        uid:  this._auth.user.uid,
+                       displayName: this._auth.user.displayName,
+                       email: this._auth.user.email,
+                       state: this.currentUser.state,
                        workshop: 'none'
                       }                      
                     })
