@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'event/:eventId/asistentes', component: EventAttendanceComponent, canActivate: [AuthGuardService]},
   {path: 'event/:eventId/user-info', component: EventUserInfoComponent, canActivate: [AuthGuardService]},
   { path: 'event/:eventId/talleres', component: WorkshopListComponent},
-  { path: 'event/:eventId/talleres/asistencia', component: WorkshopAttendanceComponent, canActivate: [AuthGuardService]},
+  { path: 'event/:eventId/talleres/inscritos', component: WorkshopAttendanceComponent, canActivate: [AuthGuardService]},
   { path: 'auth', component: AuthenticateComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
