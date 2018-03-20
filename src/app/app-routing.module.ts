@@ -6,8 +6,10 @@ import { AuthenticateComponent } from './authenticate/authenticate.component';
 import { AuthGuardService } from './shared/guards/auth-guard.service';
 import { EventComponent } from './event/event.component';
 import { EventListComponent } from './event-list/event-list.component';
+import { EventAttendanceComponent } from './event-attendance/event-attendance.component';
 import { EventUserInfoComponent } from './event-user-info/event-user-info.component';
 import { WorkshopListComponent } from './workshop-list/workshop-list.component';
+import { WorkshopAttendanceComponent } from './workshop-attendance/workshop-attendance.component';
 
 
 // Application Routes
@@ -15,8 +17,10 @@ const routes: Routes = [
   { path: '', redirectTo: 'events', pathMatch: 'full'},
   { path: 'events', component: EventListComponent },
   { path: 'event/:eventId', component: EventComponent},
+  { path: 'event/:eventId/asistentes', component: EventAttendanceComponent, canActivate: [AuthGuardService]},
   {path: 'event/:eventId/user-info', component: EventUserInfoComponent, canActivate: [AuthGuardService]},
   { path: 'event/:eventId/talleres', component: WorkshopListComponent},
+  { path: 'event/:eventId/talleres/asistencia', component: WorkshopAttendanceComponent, canActivate: [AuthGuardService]},
   { path: 'auth', component: AuthenticateComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
@@ -36,5 +40,7 @@ export const routerComponents = [
   EventListComponent,
   AuthenticateComponent,
   EventUserInfoComponent,
-  WorkshopListComponent
+  WorkshopListComponent,
+  WorkshopAttendanceComponent,
+  EventAttendanceComponent
 ];

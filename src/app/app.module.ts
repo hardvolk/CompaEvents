@@ -13,6 +13,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthService } from './shared/services/auth.service';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
