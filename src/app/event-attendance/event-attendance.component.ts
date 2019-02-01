@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabase } from '@angular/fire/database';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-event-attendance',
@@ -10,7 +11,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./event-attendance.component.css']
 })
 export class EventAttendanceComponent implements OnInit {
-  aList: Observable<Observable<any>[]>;
+  aList: Observable<{}[]>;
   eventId = '';
   constructor( private _db: AngularFireDatabase,
                private _activatedRoute: ActivatedRoute) { 

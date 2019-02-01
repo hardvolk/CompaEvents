@@ -1,9 +1,10 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-workshop-list',
