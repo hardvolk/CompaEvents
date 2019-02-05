@@ -2,9 +2,9 @@
   <h1>Asistentes al evento </h1>
   <p class="h5">{{ eventId }}</p>
   <div class="row">
-    <div class="list-group">
+    <div class="col-12 list-group">
       <ng-container *ngFor="let user of aList | async" >
-        <div *ngIf="user" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div *ngIf="user" class="list-group-item list-group-item-action align-items-start">
           <div class="d-flex w-100 justify-content-between">
             <h5 class="mb-1 user-name">{{ user.displayName }}</h5>
             <label class="text-center">
