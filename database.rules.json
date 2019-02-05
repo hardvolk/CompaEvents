@@ -6,6 +6,10 @@
           ".read": true,
           ".write": "auth != null"
         },
+        "workshops": {
+          ".read": true,
+          ".write": "auth != null"
+          },
         "attendance": {
           ".read": "auth != null",
           ".write": "auth != null"
