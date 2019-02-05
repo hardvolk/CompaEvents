@@ -89,7 +89,7 @@ export class WorkshopListComponent implements OnInit {
               .stateChanges()
               .subscribe(a => {
                 this.isUserAttendee = true;
-                this.userCanSelectWorkshop = a.payload.val().workshopSelection;
+                this.userCanSelectWorkshop = a.payload.val()['workshopSelection'];
                 console.log('Key found in attendance ', a);
                 
                 // Determ if user is enrolled in workshop
