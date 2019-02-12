@@ -4,10 +4,10 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthenticateComponent } from './authenticate/authenticate.component';
 import { AuthGuardService } from './shared/guards/auth-guard.service';
-import { EventComponent } from './event/event.component';
-import { EventListComponent } from './event-list/event-list.component';
-import { EventAttendanceComponent } from './event-attendance/event-attendance.component';
-import { EventUserInfoComponent } from './event-user-info/event-user-info.component';
+import { EventComponent } from './events/event/event.component';
+import { EventListComponent } from './events/event-list/event-list.component';
+import { AttendanceComponent } from './events/attendance/attendance.component';
+import { UserInfoComponent } from './events/user-info/user-info.component';
 import { WorkshopListComponent } from './workshop-list/workshop-list.component';
 import { WorkshopAttendanceComponent } from './workshop-attendance/workshop-attendance.component';
 
@@ -17,8 +17,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'events', pathMatch: 'full'},
   { path: 'events', component: EventListComponent },
   { path: 'event/:eventId', component: EventComponent},
-  { path: 'event/:eventId/asistentes', component: EventAttendanceComponent, canActivate: [AuthGuardService]},
-  {path: 'event/:eventId/user-info', component: EventUserInfoComponent, canActivate: [AuthGuardService]},
+  { path: 'event/:eventId/asistentes', component: AttendanceComponent, canActivate: [AuthGuardService]},
+  {path: 'event/:eventId/user-info', component: UserInfoComponent, canActivate: [AuthGuardService]},
   { path: 'event/:eventId/talleres', component: WorkshopListComponent},
   { path: 'event/:eventId/talleres/inscritos', component: WorkshopAttendanceComponent, canActivate: [AuthGuardService]},
   { path: 'auth', component: AuthenticateComponent },
@@ -39,8 +39,8 @@ export const routerComponents = [
   EventComponent,
   EventListComponent,
   AuthenticateComponent,
-  EventUserInfoComponent,
+  UserInfoComponent,
   WorkshopListComponent,
   WorkshopAttendanceComponent,
-  EventAttendanceComponent
+  AttendanceComponent
 ];

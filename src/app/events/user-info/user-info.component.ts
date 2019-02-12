@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../shared/services/auth.service';
+import { AuthService } from '../../shared/services/auth.service';
 import { Observable } from 'rxjs/Observable';
-import { ProfessionalStatus, States } from './../shared/labels';
-import { UserInfo } from './../shared/interfaces/user-info';
+import { ProfessionalStatus, States } from './../../shared/labels';
+import { UserInfo } from './../../shared/interfaces/user-info';
 
 @Component({
-  selector: 'app-event-user-info',
-  templateUrl: './event-user-info.component.html',
-  styleUrls: ['./event-user-info.component.css']
+  selector: 'app-user-info',
+  templateUrl: './user-info.component.html',
+  styleUrls: ['./user-info.component.css']
 })
-export class EventUserInfoComponent implements OnInit {
+export class UserInfoComponent implements OnInit {
   showLoading = false;
   eventId = '';
   eventInfo: Observable<any>;

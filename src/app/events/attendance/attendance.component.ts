@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../shared/services/auth.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 @Component({
-  selector: 'app-event-attendance',
-  templateUrl: './event-attendance.component.html',
-  styleUrls: ['./event-attendance.component.css']
+  selector: 'app-attendance',
+  templateUrl: './attendance.component.html',
+  styleUrls: ['./attendance.component.css']
 })
-export class EventAttendanceComponent implements OnInit {
+export class AttendanceComponent implements OnInit {
   aList: Observable<{}[]>;
   eventId = '';
   constructor( private _db: AngularFireDatabase,

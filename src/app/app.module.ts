@@ -11,13 +11,15 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AuthService } from './shared/services/auth.service';
+import { UserPaymentsComponent } from './events/user-payments/user-payments.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    routerComponents
+    routerComponents,
+    UserPaymentsComponent
   ],
   imports: [
     NgbModule.forRoot(),
