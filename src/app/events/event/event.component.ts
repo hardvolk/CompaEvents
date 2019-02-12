@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs/Observable';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from 'shared/services/auth.service';
 
 
 @Component({

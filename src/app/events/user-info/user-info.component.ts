@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from 'shared/services/auth.service';
 import { Observable } from 'rxjs/Observable';
-import { ProfessionalStatus, States } from './../../shared/labels';
-import { UserInfo } from './../../shared/interfaces/user-info';
+import { ProfessionalStatus, States } from 'shared/labels';
+import { UserInfo } from 'shared/interfaces/user-info';
 
 @Component({
   selector: 'app-user-info',
