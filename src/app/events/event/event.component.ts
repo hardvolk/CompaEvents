@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable } from 'rxjs/Observable';
+import { EventsService } from 'shared/services/events.service';
+import { SpinnerService } from 'shared/spinner/spinner.service';
 import { AuthService } from 'shared/services/auth.service';
 
 
@@ -12,19 +12,32 @@ import { AuthService } from 'shared/services/auth.service';
 })
 export class EventComponent implements OnInit {
   eventId = '';
-  eventInfo: Observable<any>;
+  eventInfo: {};
+  isAuthenticated = false;
 
-  constructor(private _db: AngularFireDatabase,
-              private _activatedRoute: ActivatedRoute,
-              private _auth: AuthService) { }
+  constructor( private _activatedRoute: ActivatedRoute, 
+               private _eventsService: EventsService, 
+               private _spinnerService: SpinnerService,
+               private _auth: AuthService) { 
+    _spinnerService.showSpinner();
+    this.isAuthenticated = _auth.isAuthenticated();
+  }
 
   ngOnInit() {
     // Subscribe eventId
     this._activatedRoute.params.subscribe( params => {
       this.eventId = params.eventId;
       // Get Event Info
-      this.eventInfo = this._db.object(`/events/${ this.eventId }/info`).valueChanges();
+      this._eventsService.getEventInfo(this.eventId).subscribe( event => { 
+        this._spinnerService.hideSpinner();
+        this.eventInfo = event;
+      });
     });
+  }
+
+  closeSession() {
+    this._auth.removeSession();
+    this.isAuthenticated = false;
   }
 
 }

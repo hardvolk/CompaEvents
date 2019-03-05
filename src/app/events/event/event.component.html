@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container pb-2">
   <!-- EVENT INFO -->
-  <div class="event-info" *ngIf="eventInfo | async as event; else eventNotFound">
+  <div class="event-info" *ngIf="eventInfo as event; else eventNotFound">
     <div class="row">
       <div class="col-12">
         <img src="{{ event.fbImage }}" alt="{{ event.title }}" class="img-fluid">
@@ -11,12 +11,15 @@
         <h1>{{ event.title }}</h1>
         <p>{{ event.type }}</p>
         <p><strong>Lugar: </strong>{{  event.place }}</p>
-        <a class="nav-link btn-link btn-dark btn-lg btn-block" [routerLink]="['talleres']">TALLERES</a>
+        <a class="btn-link" [routerLink]="['talleres']">TALLERES</a>
         <hr>
         <p>{{ event.description }}</p>
       </div>
     </div>
-    <a class="nav-link btn btn-dark btn-lg btn-block" [routerLink]="['user-info']">Asistiré</a>
+    <button *ngIf="isAuthenticated" class="btn btn-outline-dark" (click)="closeSession()">Cerrar Sesión</button>
+    <a href="javascript:void(0)" *ngIf="isAuthenticated" class="btn btn-link float-right" [routerLink]="['user-info']">Actualizar Datos</a>
+
+    <button *ngIf="!isAuthenticated" class="btn btn-primary float-right" [routerLink]="['user-info']">Quiero Asistir</button>
   </div>
   
   <!-- NO EVENT  -->
