@@ -1,3 +1,58 @@
-<p>
-  user-payments works!
-</p>
+<div class="container">
+  <h1 class="text-info">{{ eventTitle }}</h1>
+  <h3>Pagos</h3>
+  <hr>
+
+  <div *ngIf="uploadInProgress" class="d-flex align-items-center mt-2 mb-3">
+    <strong class="text-secondary">Cargando...</strong>
+    <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+  </div> 
+
+  <div class="d-flex flex-wrap" *ngIf="payments.length > 0; else noPayments">
+    <div class="mw-30 mr-3 mb-3" *ngFor="let receipt of payments">
+      <a target="_blank" href="{{ receipt.downloadUrl }}" class="text-center">
+        <img src="{{ receipt.downloadUrl }}" alt="" class="img-fluid">
+        <p>$ {{ receipt.cant }}</p>
+      </a>
+    </div>
+    <hr>
+  </div>
+  <ng-template #noPayments>
+      <p><strong>Aún no has cargado pagos</strong></p>
+  </ng-template>
+
+  <ng-template #mContent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Cargar Recibo</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="receiptForm" [ngClass]="receiptForm.touched ? 'was-validated' : ''">
+        <label>Carga la imagen de tu comprobante</label>
+        <div class="custom-file mb-3">
+          <input #fileInput type="file" id="imgFile" class="custom-file-input" (change)="onFileChange($event)" required>
+          <input type="hidden" name="fileHidden" class="form-control" formControlName="imgFile" required/>
+          <label class="custom-file-label" for="imgFile">{{ receiptForm.controls.imgFile.value || 'Seleccionar archivo...' }}</label>
+          <div class="invalid-feedback">Necesitas seleccionar una imagen</div>
+        </div>
+        <div class="form-group">
+          <label for="cant">Monto del Pago</label>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">$</div>
+            </div>
+            <input type="number" class="form-control" placeholder="0.00" formControlName="cant">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('cancel')">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="addReceiptImage(fileInput)" [disabled]="!receiptForm.valid">Subir</button>
+    </div>
+  </ng-template>
+
+  <button class="btn btn-primary mt-3 mb-3" (click)="openModal(mContent)">Agregar Comprobante</button>
+</div>
