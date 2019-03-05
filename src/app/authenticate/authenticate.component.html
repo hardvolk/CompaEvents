@@ -1,19 +1,52 @@
-<!-- MODAL -->
-<ng-template #modalContent let-c="close" let-d="dismiss">
-    <div class="modal-header">
-      <h4 class="modal-title">Importante</h4>
-      <button type="button" class="close" aria-label="Close" (click)="d('cross')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p><strong>{{ email }}</strong> no esta registrado. Si deseas registrar tu cuenta usando dicho correo selecciona "ACEPTAR"</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="c('cancel')">CANCELAR</button>
-      <button type="button" class="btn btn-primary" (click)="c('accept')">ACEPTAR</button>
-    </div>
+<!-- MODAL FOR REGISTRATION-->
+<ng-template #modalContentRegister let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Importante</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('cross')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p><strong>{{ email }}</strong> no esta registrado. Si deseas registrar tu cuenta usando dicho correo selecciona "ACEPTAR"</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('cancel')">CANCELAR</button>
+    <button type="button" class="btn btn-primary" (click)="c('accept')">ACEPTAR</button>
+  </div>
 </ng-template>
+
+<!-- MODAL FOR RESET PASSWORD -->
+<ng-template #modalContentPswdReset let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Restablecer Contraseña</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('cross')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngIf="resetPwdEmailSent" class="modal-body">
+    <h3>¡Listo!</h3>
+    <p>Se ha enviado un enlace a tu correo para restablecer tu contraseña.</p>
+  </div>
+  <div *ngIf="!resetPwdEmailSent" class="modal-body">
+    <p>
+      Se enviará un enlace a  tu correo con el que podrás restablecer tu contraseña. Por favor,
+      ingresa el correo con el cual entraste la última vez:
+    </p>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text">@</span>
+      </div>
+      <input type="email" class="form-control" placeholder="Correo" aria-label="Email" required #email>
+    </div>
+    <button [disabled]="email.value.length <= 3"
+            class="btn btn-primary float-right" 
+            (click)="sendPasswordResetEmail(email.value)">Enviar</button>
+  </div> 
+  <div class="modal-footer">    
+    <button *ngIf="resetPwdEmailSent" class="btn btn-primary" (click)="c('accept')">ACEPTAR</button>
+  </div>
+</ng-template>
+
 <!-- LOADING -->
 <div *ngIf="showLoading" class="modal modal-backdrop modal-dialog-centered loading-modal" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
@@ -29,8 +62,12 @@
     <div class="row">
         <div class="col-md-12">
             <h2 class="text-center mb-4">Identificarse usando:</h2>
-            <button class="btn" (click)="signInWithGoogle()">Google</button>
-
+            <div class="text-center">
+                <a title="Google Inc. [Public domain]" href="javascript:void(0)" (click)="signInWithGoogle()">
+                  <img width="128" alt="Google &quot;G&quot; Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/256px-Google_%22G%22_Logo.svg.png">
+                  <br> Cuenta de Google
+                </a>
+            </div>
             <hr>
 
             <div class="row">
@@ -53,7 +90,8 @@
                                     <input type="password" class="form-control form-control-lg rounded-0" [(ngModel)]="password" name="password" required>
                                     <div class="invalid-feedback">Enter your password too!</div>
                                 </div>
-                                <button type="submit" class="btn btn-success btn-lg float-right" (click)="signInWithEmail(modalContent)">Entrar</button>
+                                <a href="javascript:void(0)" class="btn btn-link" (click)="pswdResetModal(modalContentPswdReset)">¿Olvidaste tu contraseña?</a>
+                                <button type="submit" class="btn btn-success btn-lg float-right" (click)="signInWithEmail(modalContentRegister)">Entrar</button>
                             </form>
                         </div>
                         <!--/card-block-->

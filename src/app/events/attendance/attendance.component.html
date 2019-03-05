@@ -1,8 +1,13 @@
 <div class="container">
   <h1>Asistentes al evento </h1>
-  <p class="h5">{{ eventId }}</p>
-  <div class="row">
-    <div class="col-12 list-group">
+  <p class="h5 mb-3">{{ eventId }}</p>
+
+  <div class="row" bg-info>
+    <h5 class="col-10">Nombre</h5>
+    <h5 class="col-1">¿Habilitar Talleres?</h5>
+    <h5 class="col-1">Información</h5>
+  </div>
+    <div class="list-group">
       <ng-container *ngFor="let user of aList | async" >
         <div *ngIf="user" class="list-group-item list-group-item-action align-items-start">
           <div class="d-flex w-100 justify-content-between">
@@ -19,7 +24,6 @@
           <p class="mb-1"><small>{{ user.state }}</small></p>
         </div> 
       </ng-container>
-    </div>
-  </div>  
+    </div> 
 </div>
 

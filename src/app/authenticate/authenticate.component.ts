@@ -13,6 +13,7 @@ export class AuthenticateComponent implements OnInit {
   email: string;
   password: string;
   showLoading = true;
+  resetPwdEmailSent = false;
 
   constructor(private _auth: AuthService, private _ngbModal: NgbModal, private _router: Router) {}
 
@@ -48,11 +49,31 @@ export class AuthenticateComponent implements OnInit {
         });
   }
 
+  sendPasswordResetEmail(email: string) {
+    console.log('sending email to: ', email);
+    this._auth.sendPasswordReset(email).then(
+      () => { this.resetPwdEmailSent = true; }
+    ).catch(
+      () => { console.log('something went wrong') }
+    );
+  }
+
+  pswdResetModal(modalContent) {
+    this._ngbModal.open(modalContent).result.then((result) => {
+      if ( result === 'accept' ) {
+        this.resetPwdEmailSent = false;
+      }
+    }, (reason) => {});
+  }
+
   showRegisterModal(modalContent): void {
     this._ngbModal.open(modalContent).result.then((result) => {
       if ( result === 'accept' ) {
         this._auth.signUpWithEmail(this.email, this.password)
-            .then((data) => console.log('Data result: ', data))
+            .then((data) => { 
+              console.log('Data result: ', data);
+              this.redirectAfterAuth();
+            })
             .catch(error => console.error(error));
       }
     }, (reason) => {});

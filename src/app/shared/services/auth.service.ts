@@ -25,6 +25,12 @@ export class AuthService {
     return lsUser != null;
   }
 
+  removeSession() {
+    this.afAuth.auth.signOut();
+    localStorage.removeItem('compa-uid');
+    this.user = null;
+  }
+
   // Sign up method
   signUpWithEmail(email: string, password: string): Promise<any> {
     return this.afAuth.auth.createUserAndRetrieveDataWithEmailAndPassword(email, password);
@@ -41,6 +47,10 @@ export class AuthService {
 
   updateProfile(params) {
     return this.afAuth.auth.currentUser.updateProfile(params);
+  }
+
+  sendPasswordReset(email: string): Promise<void> {
+    return this.afAuth.auth.sendPasswordResetEmail(email);
   }
 
 }
