@@ -54,5 +54,6 @@
     </div>
   </ng-template>
 
-  <button class="btn btn-primary mt-3 mb-3" (click)="openModal(mContent)">Agregar Comprobante</button>
+  <button class="float-right" mat-raised-button color="accent" (click)="openModal(mContent)">Agregar Comprobante</button>
+  <a href="javascript:void(0)" mat-raised-button [routerLink]="['/event', eventId]">Regresar al Evento</a>
 </div>

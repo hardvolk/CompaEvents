@@ -1,36 +1,71 @@
+// Angular
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+// Angular Material Components
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule, 
+         MatCheckboxModule,
+         MatRadioModule,
+         MatInputModule, 
+         MatSelectModule, 
+         MatDatepickerModule, 
+         MatNativeDateModule,
+         MatSnackBarModule } from '@angular/material';
 
 import { AppRoutingModule, routerComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from './../environments/environment';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+// Angular-Firebase
 import { AngularFireModule } from '@angular/fire';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+// App services
 import { AuthService } from './shared/services/auth.service';
-import { UserPaymentsComponent } from './events/user-payments/user-payments.component';
-
-
+import { EventsService } from 'shared/services/events.service';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
+import { SpinnerService } from './shared/spinner/spinner.service';
+import { UsersService } from 'shared/services/users.service';
+import { PaymentsService } from 'shared/services/payments.service';
+import { ListComponent } from './shared/components/list/list.component';
+import { FilterComponent } from './shared/components/filter/filter.component';
+import { FinanceComponent } from './admin/finance/finance.component';
+import { UserFormComponent } from './shared/components/user-form/user-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     routerComponents,
-    UserPaymentsComponent
+    SpinnerComponent,
+    ListComponent,
+    FilterComponent,
+    FinanceComponent,
+    UserFormComponent
   ],
   imports: [
     NgbModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    AngularFireStorageModule,
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatInputModule, 
+    MatButtonModule, 
+    MatCheckboxModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSnackBarModule
   ],
-  providers: [AuthService],
+  providers: [ AuthService, EventsService, SpinnerService, UsersService, PaymentsService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

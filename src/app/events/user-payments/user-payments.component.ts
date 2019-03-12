@@ -40,7 +40,7 @@ export class UserPaymentsComponent implements OnInit {
     });
     
     // UserId
-    this._user.getCurrentUserState().subscribe( uInfo => { 
+    this._user.getCurrent().subscribe( uInfo => { 
       this.uid = uInfo.uid;
       this.getReceipts();
     });

@@ -1,12 +1,42 @@
 export const ProfessionalStatus = [
-    {label: 'Preparatoria', value: 'High School'},
-    {label: 'Universitario', value: 'University'},
-    {label: 'Profesionista', value: 'Professional'}
+    { label: 'Preparatoria', value: 'High School' },
+    { label: 'Universitario', value: 'University' },
+    { label: 'Profesionista', value: 'Professional' }
 ];
+
+export const PersonalInfoLabels = {
+    academicStatus: [
+        { label: 'Secundaria', value: 'School' },
+        { label: 'Preparatoria', value: 'High School' },
+        { label: 'Universitario', value: 'University' },
+        { label: 'Profesionista', value: 'Professional' },
+        { label: 'Receso Academico', value: 'Recess' }
+    ],
+    relationship: [
+        { label: 'Padre/Tutor', value: 'Padre/Tutor' },
+        { label: 'Familiar', value: 'Family' },
+        { label: 'Pareja/Conyuge', value: 'Partner/Spouse' },
+        { label: 'Otro', value: 'Other' }
+    ],
+    ebInterests: [
+        { label: 'Asisto a un grupo de estudio', value: 'Participant' },
+        { label: 'Modero un grupo de estudio', value: 'Moderator' },
+        { label: 'Quiero abrir un grupo de estudio', value: 'To be Moderator' },
+        { label: 'Tuve un grupo de estudio anteriormente', value: 'Was Moderator' },
+        { label: 'Solo estoy explorando', value: 'Just exploring' }
+    ],
+    previousEvents: [
+        'Retiro de líderes/moderadores', 
+        'Campa Estatal', 
+        'Campa Regional', 
+        'Encuentro de Formacion Regional', 
+        'EFL'
+    ]
+};
 
 export const States = [
     {
-        'name': 'Distrito Federal',
+        'name': 'Ciudad de México',
         'code': 'MX-DIF',
         'subdivision': 'federal district'
     },

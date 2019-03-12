@@ -16,10 +16,18 @@
         <p>{{ event.description }}</p>
       </div>
     </div>
-    <button *ngIf="isAuthenticated" class="btn btn-outline-dark" (click)="closeSession()">Cerrar Sesión</button>
-    <a href="javascript:void(0)" *ngIf="isAuthenticated" class="btn btn-link float-right" [routerLink]="['user-info']">Actualizar Datos</a>
+    <button *ngIf="isAuthenticated"
+            mat-raised-button 
+            (click)="closeSession()"> Cerrar Sesión </button>
 
-    <button *ngIf="!isAuthenticated" class="btn btn-primary float-right" [routerLink]="['user-info']">Quiero Asistir</button>
+    <a href="javascript:void(0)" 
+      *ngIf="isAuthenticated" 
+      class="float-right"
+      mat-raised-button
+      color="accent"
+      [routerLink]="['personal-info']"> Actualizar Datos </a>
+
+    <button *ngIf="!isAuthenticated" class="btn btn-primary float-right" [routerLink]="['personal-info']">Quiero Asistir</button>
   </div>
   
   <!-- NO EVENT  -->
