@@ -9,25 +9,27 @@ export class AuthService {
   public user: firebase.User;
   public redirectUrl = '';
 
+  readonly STORAGE_KEY = 'compa-user-info'
+
   constructor(private afAuth: AngularFireAuth) {
     this.userState = this.afAuth.authState;
     this.userState.subscribe(user => {
       this.user = user;
       //console.log('User Info: ', this.user);
       if(this.user) {
-        localStorage.setItem('compa-uid', this.user.uid);
+        localStorage.setItem(this.STORAGE_KEY, this.user.uid);
       }      
     });
   }
 
   isAuthenticated(): boolean {
-    const lsUser = localStorage.getItem('compa-uid');
+    const lsUser = localStorage.getItem(this.STORAGE_KEY);
     return lsUser != null;
   }
 
   removeSession() {
     this.afAuth.auth.signOut();
-    localStorage.removeItem('compa-uid');
+    localStorage.removeItem(this.STORAGE_KEY);
     this.user = null;
   }
 

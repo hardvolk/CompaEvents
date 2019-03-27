@@ -1,0 +1,47 @@
+<ng-container *ngIf="payment">
+  <div class="text-right">
+    <button mat-mini-fab color="warn" (click)="disposePayment()" *ngIf="editable">
+      <mat-icon aria-label="Eliminar">clear</mat-icon>
+    </button>
+  </div>
+  <div class="row" *ngIf="payment">
+    <a href="{{ payment.downloadUrl || 'assets/img/no-receipt_200x350.png' }}" class="col-md-5 col-12" target="_blank">
+      <img src="{{ payment.downloadUrl || 'assets/img/no-receipt_200x350.png' }}" alt="Recibo" class="img-fluid img-thumbnail">
+    </a>    
+    <div class="col-md-4 col-sm-12" [formGroup]="paymentInfo">
+      <mat-form-field>
+        <input name="cant" 
+               matInput
+               type="number"
+               placeholder="Cantidad:" 
+               formControlName="cant"
+               [readonly]="!editMode" >
+      </mat-form-field>
+      <mat-form-field>
+        <input name="date" matInput 
+                          [matDatepicker]="dpicker" 
+                          placeholder="Fecha:" 
+                          formControlName="date"
+                          [readonly]="!editMode" 
+                          (click)="dpicker.open()">
+        <mat-datepicker-toggle matSuffix [for]="dpicker"></mat-datepicker-toggle>
+        <mat-datepicker touchUi #dpicker [disabled]="!editMode"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input name="note" matInput placeholder="Nota:" formControlName="note" [readonly]="!editMode">
+      </mat-form-field>
+    </div>
+    <mat-checkbox class="col-md-2 col-12" [checked]="payment.verified" (change)="verifiedChg($event)" [disabled]="!editable">
+      Validado
+    </mat-checkbox>
+  </div>
+  <div class="text-right">
+    <button mat-fab color="accent" *ngIf="editable && !editMode" (click)="turnEditMode()">
+      <mat-icon aria-label="Editar Info">edit</mat-icon>
+    </button>
+    <button mat-fab color="accent" *ngIf="editMode" (click)="saveInfo()">
+      <mat-icon aria-label="Editar Info">done</mat-icon>
+    </button>
+  </div>
+  <hr>
+</ng-container>

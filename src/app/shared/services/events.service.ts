@@ -9,7 +9,17 @@ import { UsersService } from './users.service';
 })
 export class EventsService {
 
+  private currentEventInfo: EventInfo = null;
+
   constructor( private _db: AngularFireDatabase, private _user: UsersService ) { }
+
+  public set currentEvent(eventInfo: EventInfo) {
+    this.currentEventInfo = eventInfo;
+  }
+
+  public get currentEvent() {
+    return this.currentEventInfo;
+  }
   
   public getEventInfo( eventId:string ):Observable<EventInfo> {
     return this._db.object(`/events/${ eventId }/info`).valueChanges() as Observable<EventInfo>;
@@ -19,16 +29,28 @@ export class EventsService {
     return this._db.object(`/events/${ eventId }/staff`).valueChanges();
   }
 
+  public attendanceOf(eventId: string) {
+    return this._db.object(`/events/${ eventId }/attendance`).valueChanges();
+  }
+
+  public paymentsOf(uid: string) {
+    if (!this.currentEventInfo || !uid ) {
+      console.error('Current event info and uid are required');
+      return;
+    }
+    return this._db.object(`/events/${ this.currentEventInfo.eid }/attendance/${uid}/payments`).valueChanges();
+  }
+
   /**
-   * Get the info of some attendance for a specific event
+   * Get the info of some attendee for a specific event
    * @param eventId Id of the event in Database
    * @param uid Id of user in Database
    */
-  public getAttendanceInfo(eventId: string, uid: string) {
+  public getAttendeeInfo(eventId: string, uid: string) {
     return this._db.object(`/events/${ eventId }/attendance/${uid}`).valueChanges();
   }
 
-  public updateAttendanceInfo(eventId: string, uid: string, data) {
+  public updateAttendeeInfo(eventId: string, uid: string, data) {
     return this._db.object(`/events/${ eventId }/attendance/${uid}`).update(data);
   }
 }

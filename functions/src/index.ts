@@ -8,54 +8,6 @@ admin.initializeApp();
 //  response.send("Hello from Firebase!");
 // });
 
-export const normalizeUserNames = functions.https.onRequest((request, response) => {
-    // admin.database().ref('/users').once('value', (snapshot) => {
-    //     // Loop through items
-    //     snapshot.forEach((element) => {
-    //         const user = element.val();
-            
-    //         if (user.displayName) {
-    //             const fullNameArray = user.displayName.trim().split(' ');
-    //             switch (fullNameArray.length) {
-    //                 case 1:
-    //                     element.ref.update({ firstName: fullNameArray[0] });
-    //                 break;
-    //                 case 2:
-    //                     element.ref.update({ firstName: fullNameArray[0], lastName: fullNameArray[1] });
-    //                     break;
-    //                 case 3:
-    //                     element.ref.update({ 
-    //                         firstName: fullNameArray[0],
-    //                         lastName: fullNameArray[1] + ' ' + fullNameArray[2]
-    //                     });
-    //                     break;
-    //                 case 4:
-    //                     element.ref.update({ 
-    //                         firstName: fullNameArray[0] + ' ' + fullNameArray[1],
-    //                         lastName: fullNameArray[2] + ' ' + fullNameArray[3]
-    //                     });
-    //                     break;
-                
-    //                 default:
-    //                     if (fullNameArray.length > 4) {
-    //                         element.ref.update({ 
-    //                             firstName: fullNameArray[0] + ' ' + fullNameArray[1],
-    //                             lastName: fullNameArray.slice(2, fullNameArray.length - 1).join(' ')
-    //                         });
-    //                     } else {
-    //                         element.ref.update({ firstName: fullNameArray[0].trim() });
-    //                     }
-    //                     break;
-    //             }
-    //         } else {
-    //             console.log('No name uid: ', element.key);
-    //         }
-    //     });
-    //     console.info('---- Loop finished!');
-    //     response.send('Names updated successfully!');
-    // });
-});
-
 export const addUidToUsers = functions.https.onRequest((req, res) => {
     // admin.database().ref('/users').once('value', (snapshot) => {
     //     snapshot.forEach((element) => {
@@ -63,4 +15,61 @@ export const addUidToUsers = functions.https.onRequest((req, res) => {
     //     });
     //     res.send('Uid added!');
     // })
+    res.send('addUidToUsers called!');
 });
+
+const updatePaymentDetails = (paymentsRef: admin.database.Reference) => {
+    return paymentsRef.once('value', 
+        (pSnapshot) => {
+            let total_sum = 0;
+            let unverified_payments = 0;
+            let new_status = '';
+            pSnapshot.forEach((element) => {
+                const payment = element.val();
+                if ( element.key !== 'details' && !payment.disposed) {
+                    if (payment.verified) total_sum += (payment.cant as number);
+                    else unverified_payments ++;
+                }
+            });
+            const details = pSnapshot.val()['details'];
+            // Get status
+            if (unverified_payments == 0) {
+                if(total_sum >= details.totalCost) new_status = 'NO_DEBT';
+                else new_status = 'HAS_DEBT';
+            } else new_status = 'PENDING_VERIFICATION';
+            console.log('La suma de los pagos verificados es: ', total_sum);
+            console.log('El status es: ', new_status);
+            // Update details
+            return pSnapshot.ref.child('details').update({ paid: total_sum, status: new_status });
+        },
+        (err:Object) => console.log('Al parecer ocurrio un error: ', err)
+    );
+}
+
+export const onPaymentUpdated = functions.database.ref('/events/{event}/attendance/{uid}/payments/{payment}')
+    .onUpdate((change, context) => {
+        if (context.params.payment !== 'details') {
+            console.log('Se ha actualizado el pago con id: ', context.params.payment);
+            // Verify that either "cant", "verified" or "disposed" has changed
+            const prevPayment = change.before.val();
+            const afterPayment = change.after.val();
+            if((prevPayment.cant !== afterPayment.cant) || 
+                (prevPayment.verified !== afterPayment.verified) || 
+                (prevPayment.disposed !== afterPayment.disposed)) {
+                // If so, sum paid of all payments with verified = true                
+                return updatePaymentDetails(change.after.ref.parent);
+            }
+        }
+        return null;
+    }
+);
+
+export const onPaymentCreated = functions.database.ref('/events/{event}/attendance/{uid}/payments/{payment}')
+    .onCreate((snapshot, context) => {
+        if (context.params.payment !== 'details') {
+            console.log('Se ha creado el pago con id: ', context.params.payment);
+            return updatePaymentDetails(snapshot.ref.parent);
+        }
+        return null;
+    });
+

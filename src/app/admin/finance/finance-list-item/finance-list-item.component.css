@@ -1,0 +1,15 @@
+.info-card {
+    border-left: 1rem solid transparent;
+}
+
+.PENDING_VERIFICATION {
+    border-left-color: #e53935;
+}
+
+.HAS_DEBT {
+    border-left-color: #BDBDBD;
+}
+
+.NO_DEBT {
+    border-left-color: #03a9f4;
+}

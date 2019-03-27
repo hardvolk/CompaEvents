@@ -1,0 +1,35 @@
+<div class="row info-card" [ngClass]=" userInfo.payments ? userInfo.payments.details.status : '' ">
+  <div class="col-12 col-md-6">
+    <p>
+      <strong> {{ userInfo.firstName + ' ' + userInfo.lastName }} </strong> <br>
+      {{ userInfo.state }} <br>
+      <a href="mailto:{{ userInfo.email }}"> {{ userInfo.email }} </a>
+    </p>    
+  </div>
+  <div class="col-12 col md-6" *ngIf="userInfo.payments">
+    <div class="row">
+      <mat-form-field class="col-3">
+        <input matInput placeholder="A Pagar:" [value]="userInfo.payments.details.totalCost | currency" [readonly]="isReadonly">
+      </mat-form-field>
+      <mat-form-field class="col-3">
+        <input matInput placeholder="Pagado:" [value]="userInfo.payments.details.paid | currency" [readonly]="isReadonly">
+      </mat-form-field>
+      <mat-form-field class="col-3">
+        <input matInput placeholder="Restante:" [value]="(userInfo.payments.details.totalCost - userInfo.payments.details.paid) | currency" [readonly]="isReadonly">
+      </mat-form-field>
+      <button mat-fab *ngIf="isReadonly" (click)="isReadonly=false;">
+        <mat-icon aria-label="Editar cantidades">edit</mat-icon>
+      </button>
+      <button mat-fab *ngIf="!isReadonly" (click)="updateAmounts()">
+        <mat-icon aria-label="Guardar">done</mat-icon>
+      </button>
+    </div>
+    <button class="float-right" mat-button (click)="onViewPayments(userInfo)">
+      Ver Pagos
+    </button>
+  </div>
+  <p class="col-12 col-md-6" *ngIf="!userInfo.payments">
+    <i>No ha registrado pagos</i>
+  </p>
+</div>
+<hr>

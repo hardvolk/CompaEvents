@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { EventsService } from 'shared/services/events.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PaymentsService } from 'shared/services/payments.service';
 import { UsersService } from 'shared/services/users.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
+import { AuthService } from 'shared/services/auth.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-user-payments',
@@ -26,13 +28,15 @@ export class UserPaymentsComponent implements OnInit {
 
   constructor( private _event: EventsService, 
                private _user: UsersService, 
+               private _auth: AuthService,
                private _activatedRoute: ActivatedRoute,
+               private _router: Router,
                private _payments: PaymentsService,
-               private _modal: NgbModal ) {
+               private _modal: NgbModal,
+               private _snackBar: MatSnackBar ) {
   }
 
   ngOnInit() {
-
     // Event Title
     this._activatedRoute.params.subscribe( params => {
       this.eventId = params.eventId;
@@ -42,8 +46,14 @@ export class UserPaymentsComponent implements OnInit {
     // UserId
     this._user.getCurrent().subscribe( uInfo => { 
       this.uid = uInfo.uid;
+      if(!this.uid) this.logout();
       this.getReceipts();
     });
+  }
+
+  logout() {
+    this._auth.removeSession();
+    this._router.navigate(['/auth']);
   }
 
   getReceipts() {
@@ -76,10 +86,12 @@ export class UserPaymentsComponent implements OnInit {
         { 
           name: randomName,
           path: this.fileStoragePath, 
-          cant: this.receiptForm.controls.cant.value, 
+          cant: this.receiptForm.controls.cant.value,
+          date: new Date().toLocaleDateString('es'),
+          verified: false,
           downloadUrl: url 
         }
-      );
+      ).then(() => this._snackBar.open('✔️ Información guardada', 'Aceptar', { duration: 3000 }));
     });
   }
 

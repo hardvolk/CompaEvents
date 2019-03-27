@@ -1,0 +1,38 @@
+<ng-container *ngIf="payments$ | async as payments; else noPayments">
+  <app-list>
+    <app-finance-payment-item *ngFor="let p of payments" 
+                              [payment]="p" 
+                              (save)="onSavePayment($event)"
+                              (dispose)="onDisposePayment($event)"
+                              (verifiedChange)="onVerifiedChange($event)"></app-finance-payment-item>
+  </app-list>
+  
+  <!-- Add new payment -->
+  <app-finance-payment-item *ngIf="editingNewPayment" 
+                            [payment]="newPayment"
+                            [editable]="true"
+                            [editMode]="true" 
+                            (save)="onSavePayment($event)"
+                            (dispose)="onDisposePayment($event)"></app-finance-payment-item>
+
+  <!-- If no payments -->
+  <div *ngIf="payments.length == 0">
+    <h3> Aún no ha realizado pagos </h3>
+  </div>
+  <div class="text-md-right text-center">
+    <button mat-raised-button *ngIf="!editingNewPayment" (click)="addNewPayment()" color="accent" class="col-sm-12 col-md-3">
+      <mat-icon aria-label="Agregar nuevo Pago">add</mat-icon>
+      Agregar Pago
+    </button>
+  </div>
+</ng-container>
+
+<ng-template #noPayments>
+  <h3> No se econtró información de pagos</h3>
+  <p>Asegúrate de que la persona esta registrada al evento y ha realizado pagos</p>
+</ng-template>
+
+<a mat-button [routerLink]="['/event', eid, 'admin','finance']">
+  <mat-icon>keyboard_arrow_left</mat-icon>
+  Regresar al módulo de pagos
+</a>

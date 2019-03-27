@@ -1,0 +1,15 @@
+<!-- <app-filter></app-filter> -->
+<h3>Vista General de Pagos</h3>
+<hr>
+
+<mat-form-field>
+    <input type="number" matInput placeholder="Costo General" [value]="eventInfo.cost">
+</mat-form-field>
+
+<hr>
+<app-list>
+    <app-finance-list-item *ngFor="let user of attendance$ | async" 
+                           [user]="user" 
+                           (viewPayments)="onViewPayments($event)">
+    </app-finance-list-item>
+</app-list>

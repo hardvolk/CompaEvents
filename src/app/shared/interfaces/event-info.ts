@@ -1,5 +1,6 @@
 export interface EventInfo {
-    eventId: string,
+    eventId?: string,
+    eid?: string,
     title: string,
     description: string,
     isEnable: boolean,

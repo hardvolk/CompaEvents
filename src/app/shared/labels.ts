@@ -17,7 +17,10 @@ export const PersonalInfoLabels = {
         { label: 'Familiar', value: 'Family' },
         { label: 'Pareja/Conyuge', value: 'Partner/Spouse' },
         { label: 'Otro', value: 'Other' }
-    ],
+    ]
+};
+
+export const OtherQuestions = {
     ebInterests: [
         { label: 'Asisto a un grupo de estudio', value: 'Participant' },
         { label: 'Modero un grupo de estudio', value: 'Moderator' },
@@ -32,7 +35,7 @@ export const PersonalInfoLabels = {
         'Encuentro de Formacion Regional', 
         'EFL'
     ]
-};
+}
 
 export const States = [
     {

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { PaymentInfo } from 'shared/interfaces/payment-info';
+import { PaymentInfo, PaymentDetails } from 'shared/interfaces/payment-info';
 import { Observable } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -26,10 +27,33 @@ export class PaymentsService {
     return this._db.object(`/events/${ eventId }/attendance/${uid}/payments`).valueChanges();
   }
 
+  getPaymentsList(uid, eventId): Observable<PaymentInfo[]> {
+    return this._db.object(`/events/${ eventId }/attendance/${uid}/payments`).valueChanges().pipe(
+      map((data) => { 
+        if(data) return Object.keys(data)
+                              .filter(key => key !== 'details' && data[key].disposed != true)
+                              .map(key => data[key]);
+        else return null;
+      })
+    );
+  }
+
+  emptyPayment(): PaymentInfo {
+    return { 
+      name: Math.random().toString(36).substr(2, 5), //Random name
+      path: '', 
+      cant: 0,
+      date: new Date().toLocaleDateString('es'),
+      verified: false,
+      downloadUrl: '' 
+    };
+  }
+
   savePaymentInfo(uid: string, eventId: string, paymentInfo: PaymentInfo ) {
     const node = `events/${eventId}/attendance/${uid}/payments`;
     console.log('Saving payment info: ', paymentInfo);
-    this._db.object(node).update({ [paymentInfo.name] : paymentInfo }).then(res => alert('Pago guardado exitosamente :)'));
+
+    return this._db.object(node).update({ [paymentInfo.name] : paymentInfo });
   }
 
   uploadFile(path: string, file: string) {

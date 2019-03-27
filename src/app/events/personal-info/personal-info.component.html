@@ -18,129 +18,36 @@
     <h1 class="mt-3">{{ event.title }} <small>({{ event.type }})</small></h1>
     <hr>
 
-    <a [routerLink]="['pagos']" class="float-right" mat-raised-button color="accent">Registrar Pago</a><br>
+    <a [disabled]="!enablePaymentsLink" [routerLink]="['pagos']" class="float-right" mat-raised-button color="accent">Registrar Pago</a><br>
 
-    <form [formGroup]="personalInfo" (ngSubmit)="onSubmit()">
-      <p><strong> Datos Personales </strong></p>
-      <div class="row">
-        <mat-form-field class="col-6">
-          <input matInput placeholder="Nombre(s)" formControlName="firstName">
-        </mat-form-field>
-        <mat-form-field class="col-6">
-          <input matInput placeholder="Apellidos" formControlName="lastName">
-        </mat-form-field>
-      </div>
-      <div class="row">
-        <!-- GENDER -->
-        <mat-form-field class="col-6 col-md-4">
-          <mat-select placeholder="Sexo" formControlName="gender">
-            <mat-option value="Male">Hombre</mat-option>
-            <mat-option value="Female">Mujer</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <!-- DOB -->
-        <mat-form-field class="col-6 col-md-4">
-          <input matInput [matDatepicker]="picker" placeholder="Fecha de Nacimiento" formControlName="dob">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker touchUi #picker></mat-datepicker>
-        </mat-form-field>
-        <!-- POB -->
-        <mat-form-field class="col-6 col-md-4">
-          <mat-select placeholder="Lugar de Nacimiento" formControlName="pob">
-            <mat-option *ngFor="let state of labels.states" [value]="state.name">{{ state.name }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <!-- PHONE -->
-        <mat-form-field class="col-6 col-md-4">
-          <input type="tel" matInput placeholder="Teléfono" formControlName="phone">
-        </mat-form-field>
-      </div>
-      <p><strong> Información Regional </strong></p>
-      <div class="row">
-        <!-- STATE -->
-        <mat-form-field class="col-6">
-          <mat-select placeholder="Lugar donde vives" formControlName="state">
-            <mat-option *ngFor="let state of labels.states" [value]="state.name">{{ state.name }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <!-- CITY -->
-        <mat-form-field class="col-6">
-          <input matInput placeholder="Ciudad" formControlName="city">
-        </mat-form-field>
-      </div>
-      <p><strong> Información Académica </strong></p>
-      <div class="row" formGroupName="academicInfo">
-        <!-- ACADEMIC STATUS -->
-        <mat-form-field class="col-12 col-md-6">
-          <mat-select placeholder="Situación Académica" formControlName="academicStatus" #aStatus>
-            <mat-option *ngFor="let status of labels.info.academicStatus" [value]="status.value">{{ status.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <!-- School -->
-        <mat-form-field *ngIf="aStatus.value == 'School' || aStatus.value == 'High School'" class="col-12 col-md-6">
-          <input matInput placeholder="Escuela" formControlName="school">
-        </mat-form-field>
-        <ng-container *ngIf="aStatus.value == 'University' || aStatus.value == 'Professional'">
-          <!-- University -->
-          <mat-form-field class="col-12 col-md-6">
-            <input matInput placeholder="Universidad" formControlName="university">
-          </mat-form-field>
-          <!-- Campus -->
-          <mat-form-field class="col-12 col-md-6">
-            <input matInput placeholder="Campus" formControlName="campus">
-          </mat-form-field>
-          <!-- degree -->
-          <mat-form-field class="col-12 col-md-6">
-            <input matInput placeholder="Facultad/Carrera" formControlName="degree">
-          </mat-form-field>
-        </ng-container>
-      </div>
-      <p><strong> Asistencia Especial </strong></p>
-      <div class="row">
-        <!-- SPECIAL NEEDS -->
-        <mat-form-field class="col-12">
-          <input matInput placeholder="¿Tienes alergias? ¿Estas bajo algún tratamiento?" formControlName="specialNeeds">
-        </mat-form-field>
-      </div>
+    <app-user-form #userInfo [userObs]="user$" [showSaveBtn]="false"></app-user-form>
+            
+    <p><strong> Sólo un par de preguntas más...</strong></p>
+    <div class="row" [formGroup]="otherQuestions">
+      <!-- EB INTEREST -->
+      <p class="col-12">¿Cuál es tu interés en los grupos de estudio bíblico de Compa?</p>
+      <mat-form-field class="col-12 col-md-6">
+        <mat-select placeholder="Selecciona..." formControlName="ebInterest">
+          <mat-option *ngFor="let opt of labels.ebInterests" [value]="opt.value">{{ opt.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-      <p><strong> Contacto en Caso de Emergencia </strong></p>
-      <!-- EMERGENCY CONTACT -->
-      <div class="row" formGroupName="emergencyContact">
-        <mat-form-field class="col-12 col-md-6">
-          <input matInput placeholder="Nombre" formControlName="name">
-        </mat-form-field>
-        <mat-form-field class="col-12 col-md-6">
-          <input type="tel" matInput placeholder="Teléfono" formControlName="phone">
-        </mat-form-field>
-        <mat-form-field class="col-12 col-md-6">
-          <mat-select placeholder="Parentesco" formControlName="relationship">
-            <mat-option *ngFor="let rel of labels.info.relationship" [value]="rel.value">{{ rel.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <p><strong> Sólo un par de preguntas más...</strong></p>
-      <div class="row" formGroupName="otherQuestions">
-        <!-- EB INTEREST -->
-        <p class="col-12">¿Cuál es tu interés en los grupos de estudio bíblico de Compa?</p>
-        <mat-form-field class="col-12 col-md-6">
-          <mat-select placeholder="Selecciona..." formControlName="ebInterest">
-            <mat-option *ngFor="let opt of labels.info.ebInterests" [value]="opt.value">{{ opt.label }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <p class="col-12">Eventos previos de Compa a los que has asistido</p>
-        <!-- PREVIOUS EVENTS -->
-        <p *ngFor="let opt of previousEvents.controls.events.controls; let i = index" class="col-12 col-md-6">
-          <mat-checkbox [formControl]="opt">
-            {{ labels.info.previousEvents[i] }}
+      <p class="col-12">Eventos previos de Compa a los que has asistido</p>
+      <!-- PREVIOUS EVENTS -->
+      <div formGroupName="previousEvents">
+        <p *ngFor="let opt of labels.previousEvents; let i = index" class="col-12 col-md-6">
+          <mat-checkbox [formControl]="otherQuestions.controls.previousEvents.controls.events.controls[i]">
+            {{ opt }}
           </mat-checkbox>
         </p>
-        <mat-form-field formGroupName="previousEvents" class="col-12 col-md-6">
+        <mat-form-field class="col-12 col-md-6">
           <input matInput placeholder="Otro Evento" formControlName="other">
         </mat-form-field>
       </div>
-      <button type="submit" class="float-right" mat-raised-button color="primary">Guardar</button>
-    </form>
+      
+    </div>
+    <button class="float-right" mat-raised-button color="primary" (click)="saveOtherQuestions(); userInfo.onSubmit()">Guardar</button>
+
     <a href="javascript:void(0)" mat-raised-button [routerLink]="['/event', eventId]">Regresar al Evento</a>
   </ng-container>
 </div>

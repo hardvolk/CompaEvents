@@ -1,29 +1,27 @@
-<div class="container">
-  <h1>Asistentes al evento </h1>
-  <p class="h5 mb-3">{{ eventId }}</p>
+<h1>Asistentes al evento </h1>
+<p class="h5 mb-3">{{ eventId }}</p>
 
-  <div class="row" bg-info>
-    <h5 class="col-10">Nombre</h5>
-    <h5 class="col-1">¿Habilitar Talleres?</h5>
-    <h5 class="col-1">Información</h5>
-  </div>
-    <div class="list-group">
-      <ng-container *ngFor="let user of aList | async" >
-        <div *ngIf="user" class="list-group-item list-group-item-action align-items-start">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1 user-name">{{ user.displayName }}</h5>
-            <label class="text-center">
-              Talleres <br>
-              <input type="checkbox" 
-                     aria-label="Habilita la selección del taller"
-                     [checked]="user.workshopSelection"
-                     (change)="updateWorkshopSelection(user.key, $event.target.checked)">      
-            </label>
-          </div>
-          <a *ngIf="user.email" href="mailto:{{ user.email }}">{{ user.email }}</a>
-          <p class="mb-1"><small>{{ user.state }}</small></p>
-        </div> 
-      </ng-container>
+<div class="row" bg-info>
+  <h5 class="col-10">Nombre</h5>
+  <h5 class="col-1">¿Habilitar Talleres?</h5>
+  <h5 class="col-1">Información</h5>
+</div>
+<div class="list-group">
+  <ng-container *ngFor="let user of aList | async" >
+    <div *ngIf="user" class="list-group-item list-group-item-action align-items-start">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1 user-name">{{ user.displayName }}</h5>
+        <label class="text-center">
+          Talleres <br>
+          <input type="checkbox" 
+                  aria-label="Habilita la selección del taller"
+                  [checked]="user.workshopSelection"
+                  (change)="updateWorkshopSelection(user.key, $event.target.checked)">      
+        </label>
+      </div>
+      <a *ngIf="user.email" href="mailto:{{ user.email }}">{{ user.email }}</a>
+      <p class="mb-1"><small>{{ user.state }}</small></p>
     </div> 
+  </ng-container>
 </div>
 
