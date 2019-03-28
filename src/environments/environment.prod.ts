@@ -1,11 +1,11 @@
 export const environment = {
   production: true,
   firebase: {
-    apiKey: '',
+    apiKey: 'AIzaSyBypkYNGo9qMCm7M6ZPAqicfWD_Buf0OCM',
     authDomain: 'compa-management.firebaseapp.com',
-    databaseURL: '',
+    databaseURL: 'https://compa-management.firebaseio.com',
     projectId: 'compa-management',
     storageBucket: 'compa-management.appspot.com',
-    messagingSenderId: ''
+    messagingSenderId: '111051808140'
   }
 };
