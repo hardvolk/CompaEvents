@@ -45,3 +45,7 @@ Thumbs.db
 
 # Firebase Cache
 .firebase
+
+# Credentials
+/src/environments/environment.prod.ts
+/src/environments/environment.ts
