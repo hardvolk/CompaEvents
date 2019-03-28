@@ -26,5 +26,6 @@ export interface UserInfo extends firebase.UserInfo {
     gender?: 'Male' | 'Female',
     academicInfo?: AcademicInfo,
     emergencyContact?: EmergencyContact,
-    specialNeeds?: string
+    specialNeeds?: string,
+    payments?: any
 }

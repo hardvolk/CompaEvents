@@ -8,6 +8,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from 'shared/services/auth.service';
 import { MatSnackBar } from '@angular/material';
+import { Observable } from 'rxjs';
+import { PaymentInfo } from 'shared/interfaces/payment-info';
 
 @Component({
   selector: 'app-user-payments',
@@ -19,7 +21,7 @@ export class UserPaymentsComponent implements OnInit {
   eventTitle = '';
   eventId = '';
   uid = '';
-  payments = [];
+  payments$: Observable<PaymentInfo[]>;
   receiptForm = new FormGroup ({
     imgFile: new FormControl('', [Validators.required]),
     cant: new FormControl(0, [Validators.required, Validators.pattern('^[0-9]*$')])
@@ -47,7 +49,8 @@ export class UserPaymentsComponent implements OnInit {
     this._user.getCurrent().subscribe( uInfo => { 
       this.uid = uInfo.uid;
       if(!this.uid) this.logout();
-      this.getReceipts();
+      // this.getReceipts();
+      this.payments$ = this._payments.getPaymentsList(this.uid, this.eventId);
     });
   }
 
@@ -56,11 +59,11 @@ export class UserPaymentsComponent implements OnInit {
     this._router.navigate(['/auth']);
   }
 
-  getReceipts() {
-    this._payments.getPayments(this.uid, this.eventId).subscribe(payments => {
-      if(payments != null) this.payments = Object.values(payments);
-    });
-  }
+  // getReceipts() {
+  //   this._payments.getPayments(this.uid, this.eventId).subscribe(payments => {
+  //     if(payments != null) this.payments = Object.values(payments);
+  //   });
+  // }
 
   openModal(content) {
     this._modal.open(content);
