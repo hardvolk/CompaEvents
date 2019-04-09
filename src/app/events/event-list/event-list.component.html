@@ -1,14 +1,14 @@
 <h3>Eventos Recientes</h3>
 <ng-container *ngIf="events$ | async as events">
-  <mat-card *ngFor="e of events">
+  <mat-card *ngFor="let e of events">
     <img mat-card-image src="{{ e.fbImage }}" alt="{{ e.eid }}">
     <mat-card-content>
-      <h1>{{ e.title }}</h1>
-      <mat-chip class="float-right">{{ e.type }}</mat-chip>
+      <h4>{{ e.title }}</h4>
+      <span class="badge badge-pill badge-dark">{{ e.type }}</span>
       <p>{{ e.description }}</p>
     </mat-card-content>
     <mat-card-actions>
-      <a mat-button-raised color="accent" routerLink="['event', e.eid]">Ver más</a>
+      <a mat-raised-button color="accent" [routerLink]="['/event', e.eid]">Ver más</a>
     </mat-card-actions>
   </mat-card>
 </ng-container>
