@@ -14,7 +14,11 @@ import { MatButtonModule,
          MatSnackBarModule,
          MatListModule, 
          MatIconModule,
-         MAT_DATE_LOCALE} from '@angular/material';
+         MatToolbarModule,
+         MatSidenavModule,
+         MatCardModule,
+         MAT_DATE_LOCALE,
+         MatChipsModule} from '@angular/material';
 
 import { AppRoutingModule, routerComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -38,6 +42,7 @@ import { FilterComponent } from './shared/components/filter/filter.component';
 import { UserFormComponent } from './shared/components/user-form/user-form.component';
 import { FinanceListItemComponent } from './admin/finance/finance-list-item/finance-list-item.component';
 import { FinancePaymentItemComponent } from './admin/finance/finance-payment-item/finance-payment-item.component';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +53,8 @@ import { FinancePaymentItemComponent } from './admin/finance/finance-payment-ite
     FilterComponent,
     UserFormComponent,
     FinanceListItemComponent,
-    FinancePaymentItemComponent
+    FinancePaymentItemComponent,
+    MainLayoutComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -70,7 +76,11 @@ import { FinancePaymentItemComponent } from './admin/finance/finance-payment-ite
     MatDatepickerModule,
     MatNativeDateModule,
     MatSnackBarModule,
-    MatListModule
+    MatListModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatCardModule,
+    MatChipsModule
   ],
   providers: [ AuthService, EventsService, SpinnerService, UsersService, PaymentsService, { provide: MAT_DATE_LOCALE, useValue: 'es-MX' } ],
   bootstrap: [AppComponent]

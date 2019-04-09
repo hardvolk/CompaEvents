@@ -20,7 +20,7 @@ export class UserPaymentsComponent implements OnInit {
   uploadInProgress = false;
   eventTitle = '';
   eventId = '';
-  uid = '';
+  uid = 'undefined-uid';
   payments$: Observable<PaymentInfo[]>;
   receiptForm = new FormGroup ({
     imgFile: new FormControl('', [Validators.required]),
@@ -39,6 +39,11 @@ export class UserPaymentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Double check user id
+    if (!this._auth.isAuthenticated()) { 
+      this.logout();
+      return;
+    }
     // Event Title
     this._activatedRoute.params.subscribe( params => {
       this.eventId = params.eventId;
@@ -48,7 +53,6 @@ export class UserPaymentsComponent implements OnInit {
     // UserId
     this._user.getCurrent().subscribe( uInfo => { 
       this.uid = uInfo.uid;
-      if(!this.uid) this.logout();
       // this.getReceipts();
       this.payments$ = this._payments.getPaymentsList(this.uid, this.eventId);
     });
@@ -58,12 +62,6 @@ export class UserPaymentsComponent implements OnInit {
     this._auth.removeSession();
     this._router.navigate(['/auth']);
   }
-
-  // getReceipts() {
-  //   this._payments.getPayments(this.uid, this.eventId).subscribe(payments => {
-  //     if(payments != null) this.payments = Object.values(payments);
-  //   });
-  // }
 
   openModal(content) {
     this._modal.open(content);

@@ -20,7 +20,7 @@ export class EventComponent implements OnInit {
                private _spinnerService: SpinnerService,
                private _auth: AuthService) { 
     _spinnerService.showSpinner();
-    this.isAuthenticated = _auth.isAuthenticated();
+    this.isAuthenticated = this._auth.isAuthenticated();
   }
 
   ngOnInit() {
@@ -34,10 +34,4 @@ export class EventComponent implements OnInit {
       });
     });
   }
-
-  closeSession() {
-    this._auth.removeSession();
-    this.isAuthenticated = false;
-  }
-
 }

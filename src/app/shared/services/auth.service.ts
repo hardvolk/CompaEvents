@@ -9,27 +9,31 @@ export class AuthService {
   public user: firebase.User;
   public redirectUrl = '';
 
-  readonly STORAGE_KEY = 'compa-user-info'
+  readonly STORAGE_KEY = 'compa_user_id_key'
 
   constructor(private afAuth: AngularFireAuth) {
-    this.userState = this.afAuth.authState;
-    this.userState.subscribe(user => {
-      this.user = user;
-      //console.log('User Info: ', this.user);
-      if(this.user) {
-        localStorage.setItem(this.STORAGE_KEY, this.user.uid);
-      }      
-    });
+    if(!window.sessionStorage) {
+      console.error('Tu navegador no tiene soporte para esta aplicación');
+    } else {
+        this.userState = this.afAuth.authState;
+        this.userState.subscribe(user => {
+          this.user = user;
+          //console.log('User Info: ', this.user);
+          if(this.user) {
+            sessionStorage.setItem(this.STORAGE_KEY, this.user.uid);
+          }      
+        });
+    }
   }
 
   isAuthenticated(): boolean {
-    const lsUser = localStorage.getItem(this.STORAGE_KEY);
-    return lsUser != null;
+    const ssUser = sessionStorage.getItem(this.STORAGE_KEY);
+    return ssUser != null && ssUser !== "";
   }
 
   removeSession() {
     this.afAuth.auth.signOut();
-    localStorage.removeItem(this.STORAGE_KEY);
+    sessionStorage.removeItem(this.STORAGE_KEY);
     this.user = null;
   }
 

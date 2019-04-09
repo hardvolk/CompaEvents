@@ -3,6 +3,7 @@ import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 import { EventInfo } from 'shared/interfaces/event-info';
 import { UsersService } from './users.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,14 @@ export class EventsService {
 
   public get currentEvent() {
     return this.currentEventInfo;
+  }
+
+  public getAvailableEvents(): Observable<any> {
+    return this._db.object('/list-of-events').valueChanges().pipe(
+      map(eventList => Object.keys(eventList)
+                             .filter(key => eventList[key]['isEnable'])
+                             .map(key => eventList[key]))
+    );
   }
   
   public getEventInfo( eventId:string ):Observable<EventInfo> {

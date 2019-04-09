@@ -1,0 +1,32 @@
+mat-toolbar {
+    position: fixed;
+    z-index: 10;    
+}
+
+mat-sidenav-container {
+    min-height: 90vh;
+}
+
+@media (max-width: 700px) {
+    mat-toolbar {
+        margin-top: -56px;
+    }
+    mat-sidenav-container {
+        margin-top: 56px;
+    }
+    mat-sidenav {
+        width: 60%;
+    }
+}
+
+@media (min-width: 700px) {
+    mat-toolbar {
+        margin-top: -64px;
+    }
+    mat-sidenav-container {
+        margin-top: 64px;
+    }
+    mat-sidenav {
+        width: 20%;
+    }
+}

@@ -7,7 +7,6 @@ import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { UsersService } from 'shared/services/users.service';
 import { UserInfo } from 'shared/interfaces/user-info';
-import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-personal-info',
