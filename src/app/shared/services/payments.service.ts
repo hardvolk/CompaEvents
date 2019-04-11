@@ -4,6 +4,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { PaymentInfo, PaymentDetails } from 'shared/interfaces/payment-info';
 import { Observable } from 'rxjs';
 import { take, map } from 'rxjs/operators';
+import { LoggerService } from 'app/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ import { take, map } from 'rxjs/operators';
 export class PaymentsService {
 
   constructor( private _storage: AngularFireStorage,
-               private _db: AngularFireDatabase ) { }
+               private _db: AngularFireDatabase,
+               private _logger: LoggerService ) { }
 
   getFolderMetadata(path: string): Observable<any> {
     const ref = this._storage.ref(path);
@@ -50,6 +52,13 @@ export class PaymentsService {
   }
 
   savePaymentInfo(uid: string, eventId: string, paymentInfo: PaymentInfo ) {
+    if(!uid) {
+      this._logger.error({
+        msg: 'Trying to save in attendance/$uid/payments with no uid',
+        data: paymentInfo
+      });
+      return;
+    }
     const node = `events/${eventId}/attendance/${uid}/payments`;
     console.log('Saving payment info: ', paymentInfo);
 

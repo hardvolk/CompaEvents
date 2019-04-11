@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { EventInfo } from 'shared/interfaces/event-info';
 import { UsersService } from './users.service';
 import { map } from 'rxjs/operators';
+import { LoggerService } from 'app/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class EventsService {
 
   private currentEventInfo: EventInfo = null;
 
-  constructor( private _db: AngularFireDatabase, private _user: UsersService ) { }
+  constructor( private _db: AngularFireDatabase, private _user: UsersService, private _logger: LoggerService ) { }
 
   public set currentEvent(eventInfo: EventInfo) {
     this.currentEventInfo = eventInfo;
@@ -60,6 +61,10 @@ export class EventsService {
   }
 
   public updateAttendeeInfo(eventId: string, uid: string, data) {
+    if(!uid) {
+      this._logger.error('Trying to save in attendance/ with undefined uid');
+      return;
+    }
     return this._db.object(`/events/${ eventId }/attendance/${uid}`).update(data);
   }
 }

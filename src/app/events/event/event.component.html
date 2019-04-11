@@ -21,7 +21,7 @@
       class="float-right"
       mat-raised-button
       color="accent"
-      [routerLink]="['personal-info']"> {{ isAuthenticated ? 'Mis Datos' : 'Registrarme al Evento' }} </a>
+      [routerLink]="['personal-info']"> {{ (isAuthenticated$ | async) ? 'Mis Datos' : 'Registrarme al Evento' }} </a>
 
   </div>
   

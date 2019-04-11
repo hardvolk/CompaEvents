@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
   public userState: Observable<firebase.User>;
+  public userIsAuthenticated$: Observable<boolean>;
   public user: firebase.User;
   public redirectUrl = '';
 
@@ -14,16 +16,18 @@ export class AuthService {
   constructor(private afAuth: AngularFireAuth) {
     if(!window.sessionStorage) {
       console.error('Tu navegador no tiene soporte para esta aplicación');
-    } else {
-        this.userState = this.afAuth.authState;
-        this.userState.subscribe(user => {
-          this.user = user;
-          //console.log('User Info: ', this.user);
-          if(this.user) {
-            sessionStorage.setItem(this.STORAGE_KEY, this.user.uid);
-          }      
-        });
-    }
+    } else this.init();
+  }
+
+  init() {
+    this.userState = this.afAuth.authState;
+    this.userState.subscribe(user => {
+      this.user = user;
+      if(this.user) {
+        sessionStorage.setItem(this.STORAGE_KEY, this.user.uid);
+      }      
+    });
+    this.userIsAuthenticated$ = this.afAuth.authState.pipe(map((fUser) => fUser != null));
   }
 
   isAuthenticated(): boolean {

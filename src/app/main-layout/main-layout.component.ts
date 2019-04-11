@@ -11,12 +11,12 @@ import { MatSidenav } from '@angular/material';
 })
 export class MainLayoutComponent implements OnInit {
   @ViewChild(MatSidenav) snav: MatSidenav;
-  isAuthenticated = false;
+  isAuthenticated$;
   prevUrl = '';
   
   constructor( private _router: Router,
                private _auth: AuthService) { 
-    this.isAuthenticated = this._auth.isAuthenticated();
+    this.isAuthenticated$ = this._auth.userIsAuthenticated$;
     
   }
 
@@ -34,8 +34,7 @@ export class MainLayoutComponent implements OnInit {
   }
 
   closeSession() {
-    this._auth.removeSession();
-    this.isAuthenticated = false;
+    this._router.navigate(['/auth']).then(()=> this._auth.removeSession());
   }
 
 }

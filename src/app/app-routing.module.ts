@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthenticateComponent } from './authenticate/authenticate.component';
-import { AuthGuardService } from './shared/guards/auth-guard.service';
+import { AuthGuard } from './shared/guards/auth/auth.guard';
 import { EventComponent } from './events/event/event.component';
 import { EventListComponent } from './events/event-list/event-list.component';
 import { AttendanceComponent } from './events/attendance/attendance.component';
@@ -21,6 +21,7 @@ import { FinanceUserListComponent } from './admin/finance/finance-user-list/fina
 import { FinancePaymentsListComponent } from './admin/finance/finance-payments-list/finance-payments-list.component';
 import { NotFoundComponent } from 'shared/components/not-found/not-found.component';
 import { EventsGuard } from 'shared/guards/events/events.guard';
+import { MyInfoComponent } from './user/my-info/my-info.component';
 
 
 // Application Routes
@@ -28,16 +29,16 @@ const routes: Routes = [
   { path: '', redirectTo: 'events', pathMatch: 'full'},
   { path: 'events', component: EventListComponent },
   { path: 'event/:eventId', component: EventComponent},
-  { path: 'event/:eventId/asistentes', component: AttendanceComponent, canActivate: [AuthGuardService, EventsGuard] },
-  { path: 'event/:eventId/personal-info', component: PersonalInfoComponent, canActivate: [AuthGuardService, EventsGuard] },
-  { path: 'event/:eventId/personal-info/pagos', component: UserPaymentsComponent, canActivate: [AuthGuardService, EventsGuard] },
+  { path: 'event/:eventId/asistentes', component: AttendanceComponent, canActivate: [AuthGuard, EventsGuard] },
+  { path: 'event/:eventId/personal-info', component: PersonalInfoComponent, canActivate: [AuthGuard, EventsGuard] },
+  { path: 'event/:eventId/personal-info/payments', component: UserPaymentsComponent, canActivate: [AuthGuard, EventsGuard] },
   { path: 'event/:eventId/talleres', component: WorkshopListComponent, canActivate: [EventsGuard] },
-  { path: 'event/:eventId/talleres/inscritos', component: WorkshopAttendanceComponent, canActivate: [AuthGuardService, EventsGuard] },
+  { path: 'event/:eventId/talleres/inscritos', component: WorkshopAttendanceComponent, canActivate: [AuthGuard, EventsGuard] },
   {
     path: 'event/:eventId/admin',
     component: AdminRootComponent,
     data: { permissionType: PermissionTypes.ADMIN },
-    canActivate: [ AuthGuardService, EventsGuard ],
+    canActivate: [ AuthGuard, EventsGuard ],
     canActivateChild: [ PermissionsGuard ],
     children: [
       {
@@ -62,6 +63,10 @@ const routes: Routes = [
       }
     ]
   },
+  {
+    path: 'my-info',
+    component: MyInfoComponent
+  },
   { path: 'forbidden', component: NoAccessComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: 'auth', component: AuthenticateComponent },
@@ -74,7 +79,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes, { paramsInheritanceStrategy: 'always' })
   ],
   declarations: [],
-  providers: [AuthGuardService, PermissionsGuard, EventsGuard],
+  providers: [AuthGuard, PermissionsGuard, EventsGuard],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
@@ -94,4 +99,5 @@ export const routerComponents = [
   FinancePaymentsListComponent,
   NoAccessComponent,
   NotFoundComponent,
+  MyInfoComponent
 ];

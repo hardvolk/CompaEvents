@@ -15,11 +15,11 @@ interface EmergencyContact {
 export interface UserInfo extends firebase.UserInfo {
     firstName: string,
     lastName: string,
-    professionalStatus: string,
-    degree: string,
-    school: string,
-    state: string,
-    city: string,
+    professionalStatus?: string,
+    degree?: string,
+    school?: string,
+    state?: string,
+    city?: string,
     phone?: string,
     dob?: string,
     pob?: string, // Place of birth

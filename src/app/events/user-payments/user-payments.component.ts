@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { EventsService } from 'shared/services/events.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaymentsService } from 'shared/services/payments.service';
 import { UsersService } from 'shared/services/users.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
 import { AuthService } from 'shared/services/auth.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs';
 import { PaymentInfo } from 'shared/interfaces/payment-info';
 
@@ -17,6 +17,9 @@ import { PaymentInfo } from 'shared/interfaces/payment-info';
   styleUrls: ['./user-payments.component.css']
 })
 export class UserPaymentsComponent implements OnInit {
+  @ViewChild('modalContent') modalContent: TemplateRef<any>;
+  dialogRef: MatDialogRef<any>;
+
   uploadInProgress = false;
   eventTitle = '';
   eventId = '';
@@ -35,15 +38,12 @@ export class UserPaymentsComponent implements OnInit {
                private _router: Router,
                private _payments: PaymentsService,
                private _modal: NgbModal,
-               private _snackBar: MatSnackBar ) {
+               private _snackBar: MatSnackBar,
+               private _dialog: MatDialog) {
   }
 
   ngOnInit() {
-    // Double check user id
-    if (!this._auth.isAuthenticated()) { 
-      this.logout();
-      return;
-    }
+    this.dialogRef = this._dialog.open(this.modalContent);
     // Event Title
     this._activatedRoute.params.subscribe( params => {
       this.eventId = params.eventId;
@@ -53,7 +53,6 @@ export class UserPaymentsComponent implements OnInit {
     // UserId
     this._user.getCurrent().subscribe( uInfo => { 
       this.uid = uInfo.uid;
-      // this.getReceipts();
       this.payments$ = this._payments.getPaymentsList(this.uid, this.eventId);
     });
   }
@@ -61,6 +60,11 @@ export class UserPaymentsComponent implements OnInit {
   logout() {
     this._auth.removeSession();
     this._router.navigate(['/auth']);
+  }
+
+  goToPersonalInfo() {
+    this.dialogRef.close();
+    this._router.navigate(['../'], { relativeTo: this._activatedRoute, queryParams: { noModal: true } });
   }
 
   openModal(content) {

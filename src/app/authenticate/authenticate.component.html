@@ -47,37 +47,22 @@
   </div>
 </ng-template>
 
-<!-- LOADING -->
-<div *ngIf="showLoading" class="modal modal-backdrop modal-dialog-centered loading-modal" role="dialog" tabindex="-1">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">        
-        <div class="modal-body">
-          <p>Cargando...</p>
-        </div>        
-      </div>
-    </div>
-</div>
-
-<div class="container py-5">
+<div class="container py-2">
     <div class="row">
         <div class="col-md-12">
-            <h2 class="text-center mb-4">Identificarse usando:</h2>
+            <h5 class="text-center mb-4">Puedes identificarte con:</h5>
             <div class="text-center">
                 <a title="Google Inc. [Public domain]" href="javascript:void(0)" (click)="signInWithGoogle()">
-                  <img width="128" alt="Google &quot;G&quot; Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/256px-Google_%22G%22_Logo.svg.png">
+                  <img width="128" alt="Google &quot;G&quot; Logo" src="/assets/img/google-logo.png">
                   <br> Cuenta de Google
                 </a>
             </div>
             <hr>
-
+            <h5 class="text-center mb-4">O puedes usar otra cuenta de correo:</h5>
             <div class="row">
                 <div class="col-md-6 mx-auto">
-
                     <!-- form card login -->
                     <div class="card rounded-0">
-                        <div class="card-header">
-                            <p><strong>Cuenta de Email</strong></p>
-                        </div>
                         <div class="card-body">
                             <form class="form" role="form" autocomplete="off" id="formLogin" novalidate="" method="POST">
                                 <div class="form-group">

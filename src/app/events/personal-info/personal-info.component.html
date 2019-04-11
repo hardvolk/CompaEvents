@@ -8,6 +8,15 @@
   </p>
 </ng-template>
 
+<!-- MODAL TEMPLATE -->
+<ng-template #modalContent>
+    <p> Nos ayudaría mucho si actualizas tu información antes de subir tu pago 🙂</p>
+    <div class="text-right">
+      <button mat-button [mat-dialog-close]="'ok'" cdkFocusInitial>Aceptar</button>      
+    </div>
+  
+</ng-template>
+
 <div class="container mat-typography pb-4">
   <ng-container *ngIf="event; else eventNotFound">
     <div class="row">
@@ -18,9 +27,18 @@
     <h1 class="mt-3">{{ event.title }} <small>({{ event.type }})</small></h1>
     <hr>
 
-    <a [disabled]="!enablePaymentsLink" [routerLink]="['pagos']" class="float-right" mat-raised-button color="accent">Registrar Pago</a><br>
+    <button [disabled]="!enablePaymentsBtn"
+            class="float-right"
+            mat-raised-button
+            (click)="goToPayments()"
+            color="accent">Registrar Pago</button>
+    
+    <br>
 
-    <app-user-form #userInfo [userObs]="user$" [showSaveBtn]="false"></app-user-form>
+    <app-user-form #userInfo
+                  [userObs]="user$"
+                  [showSaveBtn]="false"
+                  (statusChange)="onFormStatusChange($event)"></app-user-form>
             
     <p><strong> Sólo un par de preguntas más...</strong></p>
     <div class="row" [formGroup]="otherQuestions">
@@ -46,7 +64,11 @@
       </div>
       
     </div>
-    <button class="float-right" mat-raised-button color="primary" (click)="saveOtherQuestions(); userInfo.onSubmit()">Guardar</button>
+    <button [disabled]="!validForm"
+            class="float-right"
+            mat-raised-button
+            color="primary"
+             (click)="saveOtherQuestions(); userInfo.onSubmit()">Guardar</button>
 
     <a href="javascript:void(0)" mat-raised-button [routerLink]="['/event', eventId]">Regresar al Evento</a>
   </ng-container>

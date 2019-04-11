@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { UserInfo } from 'shared/interfaces/user-info';
 import { FormBuilder } from '@angular/forms';
@@ -17,13 +17,21 @@ export class UserFormComponent implements OnInit, OnDestroy {
   showSaveBtn = true;
   @Input('userObs')
   userInfo$: Observable<UserInfo>;
+  @Output('updated')
+  infoUpdated = new EventEmitter;
+  @Output('statusChange')
+  statusChanges = new EventEmitter;
+
   user: UserInfo;
   subscription: Subscription;
   labels = { states: States, info: PersonalInfoLabels  };
 
   userInfo = UserInfoFG;
 
-  constructor( private _fb: FormBuilder, private _users: UsersService, private _snackBar: MatSnackBar) { }
+  constructor( private _fb: FormBuilder, private _users: UsersService, private _snackBar: MatSnackBar) { 
+    this.userInfo.reset();
+    this.userInfo.statusChanges.subscribe((status) => this.statusChanges.emit(status));
+  }
 
   ngOnInit() {
     this.subscription = this.userInfo$.subscribe((uInfo) => {
@@ -42,7 +50,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
       return;
     }
     const user = Object.assign(this.user, this.userInfo.value);
-    this._users.updateUser(user).then(() => {      
+    this._users.updateUser(user).then(() => {
+      this.infoUpdated.emit(user);
       this._snackBar.open('✔️ Información guardada', 'Aceptar', { duration: 3000 });
     });
   }
@@ -51,5 +60,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
   public set enableForm(val: boolean) {
     console.log('Enable form: ', val);
     val ? this.userInfo.enable() : this.userInfo.disable();
+  }
+
+  public hasError = (controlName: string, errorName: string) =>{
+    return this.userInfo.controls[controlName].hasError(errorName);
   }
 }

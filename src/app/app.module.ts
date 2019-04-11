@@ -17,7 +17,8 @@ import { MatButtonModule,
          MatToolbarModule,
          MatSidenavModule,
          MatCardModule,
-         MAT_DATE_LOCALE} from '@angular/material';
+         MAT_DATE_LOCALE,
+         MatDialogModule} from '@angular/material';
 
 import { AppRoutingModule, routerComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -78,7 +79,8 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
     MatListModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatCardModule
+    MatCardModule,
+    MatDialogModule
   ],
   providers: [ AuthService, EventsService, SpinnerService, UsersService, PaymentsService, { provide: MAT_DATE_LOCALE, useValue: 'es-MX' } ],
   bootstrap: [AppComponent]

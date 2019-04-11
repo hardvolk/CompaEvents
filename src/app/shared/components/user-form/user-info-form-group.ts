@@ -1,14 +1,14 @@
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 const fb = new FormBuilder;
 
 export const UserInfoFG = fb.group({
-    firstName: ['Primer Nombre'],
-    lastName: ['Apellido'],
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
     gender: [''],
-    dob: [''],
+    dob: ['', Validators.required],
     pob: [''], // Place of birth
     phone: [''],
-    state: [''],
+    state: ['', Validators.required],
     city: [''],
     academicInfo: fb.group({
       academicStatus: [''],

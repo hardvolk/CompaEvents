@@ -13,14 +13,14 @@ import { AuthService } from 'shared/services/auth.service';
 export class EventComponent implements OnInit {
   eventId = '';
   eventInfo: {};
-  isAuthenticated = false;
+  isAuthenticated$;
 
   constructor( private _activatedRoute: ActivatedRoute, 
                private _eventsService: EventsService, 
                private _spinnerService: SpinnerService,
                private _auth: AuthService) { 
     _spinnerService.showSpinner();
-    this.isAuthenticated = this._auth.isAuthenticated();
+    this.isAuthenticated$ = this._auth.userIsAuthenticated$;
   }
 
   ngOnInit() {
